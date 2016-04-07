@@ -12,15 +12,759 @@
 </head>
 <body>
 
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.0.0/mapbox-gl-geocoder.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.0.0/mapbox-gl-geocoder.css' type='text/css' />
+
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v2.0.0/mapbox-gl-directions.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v2.0.0/mapbox-gl-directions.css' type='text/css' />
+
+<style>
+    .mapboxgl-popup {
+        max-width: 400px;
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    }
+
+    .marker-title {
+        font-weight: 700;
+    }
+    #geocoder-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    margin-top: 10px;
+    margin-left:300;
+   }
+
+  #geocoder-container > div {
+    min-width:50%;
+    margin-left:25%;
+  }
+</style>
+
 <div id='map'></div>
+<div id='geocoder-container'></div>
+
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoicG9vcm5pLWJhZHJpbmF0aCIsImEiOiJjaWVoOGFiNWUwMDl2c3JtMXBzcWluaDN5In0.uunHEpdx8grTpnmTwTwxHA';
 var map = new mapboxgl.Map({
     container: 'map', // container id
-    style: 'mapbox://styles/poorni-badrinath/cimhlccik0046d0mcmds0nw6k', //stylesheet location
-    center: [-77.53, 12.99], // starting position
-    zoom: 10 // starting zoom
+    style: 'mapbox://styles/mapbox/streets-v8', //stylesheet location
+    center: [77.55, 12.99], // starting position
+    zoom: 10, // starting zoom
+    hash: true 
 });
+map.on('style.load', function () {
+    map.addSource("markers", {
+        "type": "geojson",
+        "data": {
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2016-04-07T10:01:02Z",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "node/427531067",
+      "properties": {
+        "@id": "node/427531067",
+        "is_in": "Bengaluru",
+        "name": "Seshadripuram",
+        "name:kn": "ಶೇಷಾದ್ರಿಪುರಂ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Seshadripuram</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5753419,
+          12.9931876
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/427595936",
+      "properties": {
+        "@id": "node/427595936",
+        "is_in": "Bengaluru",
+        "name": "Malleswaram",
+        "name:kn": "ಮಲ್ಲೇಶ್ವರಂ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Malleswaram</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5703253,
+          13.0027353
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/429857521",
+      "properties": {
+        "@id": "node/429857521",
+        "is_in": "Bengaluru",
+        "name": "Sriramapura",
+        "name:kn": "ಶ್ರೀರಾಮಪುರ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Sriramapura</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5638092,
+          12.9909874
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/429857523",
+      "properties": {
+        "@id": "node/429857523",
+        "alt_name": "Rajajinagar",
+        "is_in": "Bengaluru",
+        "name": "Rajaji Nagar",
+        "name:kn": "ರಾಜಾಜಿನಗರ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Rajajinagar</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.554883,
+          12.9882338
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/429921858",
+      "properties": {
+        "@id": "node/429921858",
+        "name": "Sowrashtrapet",
+        "name:kn": "ಸೌರಾಷ್ಟ್ರಪೇಟೆ",
+        "place": "locality",
+        "description": "<div class=\"marker-title\">Sowrashtrapet</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.573524,
+          12.9725763
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/446812243",
+      "properties": {
+        "@id": "node/446812243",
+        "is_in": "Bengaluru",
+        "name": "Nandini Layout",
+        "name:kn": "ನಂದಿನಿ ಲೇಔಟ್",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Nandini Layout</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5378032,
+          13.0104064
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/456112031",
+      "properties": {
+        "@id": "node/456112031",
+        "name": "Okalipura",
+        "name:kn": "ಓಕಳಿಪುರ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Okalipura</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5660317,
+          12.9832823
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/456112035",
+      "properties": {
+        "@id": "node/456112035",
+        "name": "Ramachandra Pura",
+        "name:kn": "ರಾಮಚಂದ್ರಪುರ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Ramachandrapura</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5622224,
+          12.9851843
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/461539223",
+      "properties": {
+        "@id": "node/461539223",
+        "name": "Subrahmanya Nagar",
+        "name:kn": "ಸುಬ್ರಹ್ಮಣ್ಯ ನಗರ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Subramanyanagar</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5567994,
+          13.0044454
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/725239090",
+      "properties": {
+        "@id": "node/725239090",
+        "name": "Rajajinagar 5th Block",
+        "name:kn": "ರಾಜಾಜಿನಗರ ೫ನೇ ಬ್ಲಾಕ್",
+        "place": "neighbourhood",
+        "description": "<div class=\"marker-title\">Rajajinagar 5 Block</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5542426,
+          12.978354
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1440229422",
+      "properties": {
+        "@id": "node/1440229422",
+        "alt_name": "Basaveshwaranagar",
+        "name": "Basaveshwaranagar 2nd Stage",
+        "name:kn": "ಬಸವೇಶ್ವರ ನಗರ ೨ನೆ ಹಂತ",
+        "place": "locality",
+        "description": "<div class=\"marker-title\">Basaveshwaranagar</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5385709,
+          12.986475
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1588150119",
+      "properties": {
+        "@id": "node/1588150119",
+        "addr:postcode": "560058",
+        "name": "Laggere",
+        "name:kn": "ಲಗ್ಗೆರೆ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Laggere</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5207301,
+          13.0108677
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1588150128",
+      "properties": {
+        "@id": "node/1588150128",
+        "name": "Kamakshipalya",
+        "name:kn": "ಕಾಮಾಕ್ಷಿಪಾಳ್ಯ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Kamakshipalya</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5226376,
+          12.9823617
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1616772424",
+      "properties": {
+        "@id": "node/1616772424",
+        "name": "Rajajinagar 1st Block",
+        "name:kn": "ರಾಜಾಜಿನಗರ ೧ನೇ ಬ್ಲಾಕ್",
+        "place": "neighbourhood",
+        "description": "<div class=\"marker-title\">Rajajinagar 1 Block</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5514082,
+          13.0021276
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1616772427",
+      "properties": {
+        "@id": "node/1616772427",
+        "name": "Rajajinagar 2nd Block",
+        "place": "locality",
+        "description": "<div class=\"marker-title\">Rajajinagar 2 Block</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5521689,
+          12.9947722
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1616772428",
+      "properties": {
+        "@id": "node/1616772428",
+        "name": "Rajajinagar 4th Block",
+        "name:kn": "ರಾಜಾಜಿನಗರ ೪ನೇ ಬ್ಲಾಕ್",
+        "place": "neighbourhood",
+        "description": "<div class=\"marker-title\">Rajajinagar 4 Block</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5560935,
+          12.98248
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1616772430",
+      "properties": {
+        "@id": "node/1616772430",
+        "name": "Rajajinagar 3rd Block",
+        "name:kn": "ರಾಜಾಜಿನಗರ ೩ನೇ ಬ್ಲಾಕ್",
+        "place": "neighbourhood",
+        "description": "<div class=\"marker-title\">Rajajinagar 3 Block</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5514911,
+          12.9837251
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1778942893",
+      "properties": {
+        "@id": "node/1778942893",
+        "name": "Saraswathi Nagar",
+        "name:kn": "ಸರಸ್ವತಿ ನಗರ",
+        "place": "neighbourhood",
+        "description": "<div class=\"marker-title\">Saraswathinagar</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5290026,
+          12.9716073
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1778943773",
+      "properties": {
+        "@id": "node/1778943773",
+        "name": "Prashanth Nagar",
+        "place": "hamlet",
+        "description": "<div class=\"marker-title\">Prashanthnagar</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5313254,
+          12.9776188
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1778944439",
+      "properties": {
+        "@id": "node/1778944439",
+        "name": "Malagala",
+        "name:kn": "ಮಲಗಲ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Malagala</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5161012,
+          12.9778698
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1778956732",
+      "properties": {
+        "@id": "node/1778956732",
+        "name": "Dasarahalli",
+        "name:kn": "ದಾಸರಹಳ್ಳಿ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Dasarahalli</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5427194,
+          12.9784134
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1808809378",
+      "properties": {
+        "@id": "node/1808809378",
+        "name": "Kaveri Layout",
+        "name:kn": "ಕಾವೇರಿ ಬಡಾವಣೆ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Kaveri Layout</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5268568,
+          12.9731025
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1809717632",
+      "properties": {
+        "@id": "node/1809717632",
+        "name": "M C Layout",
+        "place": "locality",
+        "description": "<div class=\"marker-title\">MC Layout</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5353937,
+          12.9730957
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1809717633",
+      "properties": {
+        "@id": "node/1809717633",
+        "name": "Binny Layout",
+        "place": "hamlet",
+        "description": "<div class=\"marker-title\">Binny Layout</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.534246,
+          12.9719088
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1813491559",
+      "properties": {
+        "@id": "node/1813491559",
+        "name": "NHCS Layout",
+        "place": "hamlet",
+        "description": "<div class=\"marker-title\">NHCS Layout</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5310839,
+          12.9725171
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1813491561",
+      "properties": {
+        "@id": "node/1813491561",
+        "name": "Central Excise Layout",
+        "place": "hamlet",
+        "description": "<div class=\"marker-title\">Central Excise Layout</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.53298,
+          12.9738535
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1813493059",
+      "properties": {
+        "@id": "node/1813493059",
+        "name": "Kurubara Halli",
+        "name:kn": "ಕುರುಬರಹಳ್ಳಿ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Kurubarahalli</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5364001,
+          13.0007963
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1813501240",
+      "properties": {
+        "@id": "node/1813501240",
+        "name": "Rajajinagar 6th Block",
+        "name:kn": "ರಾಜಾಜಿನಗರ ೬ನೇ ಬ್ಲಾಕ್",
+        "place": "neighbourhood",
+        "description": "<div class=\"marker-title\">Rajajinagar 6 Block</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5526972,
+          12.9779588
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1815060333",
+      "properties": {
+        "@id": "node/1815060333",
+        "name": "Govindraja Nagar",
+        "name:kn": "ಗೋವಿಂದರಾಜ ನಗರ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Govindarajanagar</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5352145,
+          12.976124
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1843653195",
+      "properties": {
+        "@id": "node/1843653195",
+        "name": "Sampige Layout",
+        "name:kn": "ಸಂಪಿಗೆ ಲೇಔಟ್",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Sampige Layout</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.528243,
+          12.9764697
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1843653226",
+      "properties": {
+        "@id": "node/1843653226",
+        "name": "Amarjyothi Nagar",
+        "name:kn": "ಅಮರಜ್ಯೋತಿ ನಗರ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Amarjyothi Nagar</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5291201,
+          12.9739241
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1843665966",
+      "properties": {
+        "@id": "node/1843665966",
+        "name": "Kaveri Pura",
+        "name:kn": "ಕಾವೇರಿ ಪುರ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Kaveripura</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5255041,
+          12.9769861
+        ]
+      }
+    },
+    
+    {
+      "type": "Feature",
+      "id": "node/2026076829",
+      "properties": {
+        "@id": "node/2026076829",
+        "name": "Maruthi Extension",
+        "name:kn": "ಮಾರುತಿ ಬಡಾವಣೆ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Maruthi Extension</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5631012,
+          12.9976424
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/2026076832",
+      "properties": {
+        "@id": "node/2026076832",
+        "name": "Gayatri Nagar",
+        "name:kn": "ಗಾಯತ್ರಿನಗರ",
+        "place": "suburb",
+        "description": "<div class=\"marker-title\">Gayatrinagar</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5590106,
+          13.0000366
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/2293216873",
+      "properties": {
+        "@id": "node/2293216873",
+        "name": "Griha Laxmi Colony",
+        "place": "locality",
+        "description": "<div class=\"marker-title\">Griha Laxmi Colony</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5304186,
+          12.9936933
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/3422921187",
+      "properties": {
+        "@id": "node/3422921187",
+        "name": "Vyalikaval",
+        "name:kn": "ವ್ಯಾಲಿಕಾವಲ್",
+        "place": "neighbourhood",
+        "description": "<div class=\"marker-title\">Vyalikaval</div>"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5751704,
+          13.0042636
+        ]
+      }
+    }
+  ]
+}
+    });
+
+     map.addLayer({
+        "id": "markers",
+        "type": "symbol",
+        "source": "markers",
+        "layout": {
+            "icon-image": "marker-15",
+            "text-field": "{title}",
+            "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+            "text-offset": [0, 0.6],
+            "text-anchor": "top"
+        }
+    });  
+ });
+
+
+var popup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false
+});
+
+map.on('mousemove', function(e) {
+    console.log("Inside click function");
+    var features = map.queryRenderedFeatures(e.point, { layers: ['markers'] });
+    // Change the cursor style as a UI indicator.
+    map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+
+    if (!features.length) {
+        popup.remove();
+        return;
+    }
+
+    var feature = features[0];
+
+    // Populate the popup and set its coordinates
+    // based on the feature found.
+    popup.setLngLat(feature.geometry.coordinates)
+        .setHTML(feature.properties.description)
+        .addTo(map);
+});
+
+var geocoder = new mapboxgl.Geocoder({
+    container: 'geocoder-container' // Optional. Specify a unique container for the control to be added to.
+});
+
+map.addControl(geocoder);
+
+
+map.addControl(new mapboxgl.Directions());
+</script>
 </script>
 
 </body>
