@@ -2,11 +2,10 @@
 <html>
 <head>
     <meta charset='utf-8' />
-    <title></title>
+    <title>Display driving directions</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.21.0/mapbox-gl.css' rel='stylesheet' />
-    <script src='https:///api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -14,182 +13,22 @@
 </head>
 <body>
 
-<style>
-.overlay {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-}
-
-.overlay button {
-    font:600 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-    background-color: #3386c0;
-    color: #fff;
-    display: inline-block;
-    margin: 0;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;
-}
-
-.overlay button:hover {
-    background-color:#4ea0da;
-}
-</style>
-<script src='//api.tiles.mapbox.com/mapbox.js/plugins/turf/v2.0.0/turf.min.js' charset='utf-8'></script>
-
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v3.1.3/mapbox-gl-directions.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v3.1.3/mapbox-gl-directions.css' type='text/css' />
 <div id='map'></div>
-<div class='overlay'>
-    <button id='replay'>Replay</button>
-</div>
 
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoicG9vcm5pLWJhZHJpbmF0aCIsImEiOiJjaWVoOGFiNWUwMDl2c3JtMXBzcWluaDN5In0.uunHEpdx8grTpnmTwTwxHA';
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/poorni-badrinath/cir7rx39z000rh4ntsdzgxxoi',
-    center: [77.632754, 12.966773],
-    zoom: 3,
-    hash: true
+    style: 'mapbox://styles/poorni-badrinath/cjn1t1j7a564n2sprlg03xzgo',
+    center: [-77.664947, 12.995648],
+    zoom: 15
 });
 
-// Mysore Road
-var origin = [77.5300753, 12.9466919];
-
-// Baiyappanahalli
-var destination = [78.65246, 12.99079];
-
-// A simple line from origin to destination.
-var route = {
-    "type": "FeatureCollection",
-    "features": [{
-        "type": "Feature",
-        "geometry": {
-            "type": "LineString",
-            "coordinates": [
-                origin,
-                stop1 = [77.5367824, 12.9529118],
-                stop2 = [77.5335932, 12.9618581],
-                stop3 = [77.5335932, 12.9618581],
-                stop4 = [77.5375757, 12.9713392],
-                stop5 = [77.5456204, 12.974267],
-                stop6 = [77.5553521, 12.975602],
-                stop7 = [77.5653792, 12.9758581],
-                stop8 = [77.5728698, 12.9756753],
-                stop9 = [77.5842326, 12.9745014],
-                stop10 = [77.5916667, 12.9787345],
-                stop11 = [77.5977565, 12.9808487],
-                stop12 = [77.6067815, 12.9755017],
-                stop13 = [77.617013 , 12.9729953],
-                stop14 = [77.626705,  12.9764915],
-                stop15 = [77.6386592, 12.9783079],
-                stop16 = [77.6449595, 12.9859442],
-                stop17 = [77.6524062, 12.9907681],
-                stop18 = [78.0524062, 12.9907681],
-                stop18 = [78.2524062, 13.0907681],
-                destination
-            ]
-        }
-    }]
-};
-
-// A single point that animates along the route.
-// Coordinates are initially set to origin.
-var point = {
-    "type": "FeatureCollection",
-    "features": [{
-        "type": "Feature",
-        "geometry": {
-            "type": "Point",
-            "coordinates": origin
-        }
-    }]
-};
-
-// Calculate the distance in kilometers between route start/end point.
-var lineDistance = turf.lineDistance(route.features[0], 'kilometers');
-
-var arc = [];
-
-// Draw an arc between the `origin` & `destination` of the two points
-for (var i = 0; i < lineDistance; i++) {
-    var segment = turf.along(route.features[0], i / 1000 * lineDistance, 'kilometers');
-    arc.push(segment.geometry.coordinates);
-}
-
-// Update the route with calculated arc coordinates
-route.features[0].geometry.coordinates = arc;
-
-// Used to increment the value of the point measurement against the route.
-var counter = 0;
-
-map.on('load', function () {
-    // Add a source and layer displaying a point which will be animated in a circle.
-    map.addSource('route', {
-        "type": "geojson",
-        "data": route
-    });
-
-    map.addSource('point', {
-        "type": "geojson",
-        "data": point
-    });
-
-    map.addLayer({
-        "id": "route",
-        "source": "route",
-        "type": "line",
-        "paint": {
-            "line-width": 3,
-            "line-color": "#800000"
-        }
-    });
-
-    map.addLayer({
-        "id": "point",
-        "source": "point",
-        "type": "symbol",
-        "layout": {
-            "icon-image": "rail-15",
-            "icon-rotate": 45
-        }
-    });
-
-    function animate() {
-        // Update point geometry to a new position based on counter denoting
-        // the index to access the arc.
-        point.features[0].geometry.coordinates = route.features[0].geometry.coordinates[counter];
-
-        // Update the source with this new data.
-        map.getSource('point').setData(point);
-
-        // Request the next frame of animation so long as destination has not
-        // been reached.
-        if (point.features[0].geometry.coordinates[0] !== destination[0]) {
-            requestAnimationFrame(animate);
-        }
-
-        counter = counter + 1;
-    }
-
-    document.getElementById('replay').addEventListener('click', function() {
-        // Set the coordinates of the original point back to origin
-        point.features[0].geometry.coordinates = origin;
-
-        // Update the source layer
-        map.getSource('point').setData(point);
-
-        // Reset the counter
-        counter = 0;
-
-        // Restart the animation.
-        animate(counter);
-    });
-
-    // Start the animation.
-    animate(counter);
-});
+map.addControl(new MapboxDirections({
+    accessToken: mapboxgl.accessToken
+}), 'top-left');
 </script>
 
 </body>
